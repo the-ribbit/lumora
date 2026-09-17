@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   澄境标题体 —— 两个本地字体注册为同一个字族
+   ============================================================ */
+@font-face {
+  font-family: '澄境标题体';
+  src: url('../input_assets/lumora-display-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '澄境标题体';
+  src: url('../input_assets/lumora-display-italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 2.5rem;
+    background: #000;
+  }
+
+  body {
+    @apply bg-black font-sans text-white antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(255, 255, 255, 0.22);
+  }
+}
+
+@layer components {
+  /* ==========================================================
+     液态玻璃 —— 近透明白底 + 明度混合 + 4px 模糊
+     无实色边框，伪元素绘制 1.4px 渐变边缘（上下亮、中间隐）
+     ========================================================== */
+  .liquid-glass {
+    position: relative;
+    background: color-mix(in srgb, #ffffff 11%, transparent);
+    -webkit-backdrop-filter: blur(4px) saturate(1.15);
+    backdrop-filter: blur(4px) saturate(1.15);
+    border: 0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.1) 28%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0.1) 72%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  /* 玻璃卡片（正文区） */
+  .glass-card {
+    transition:
+      background 400ms ease,
+      transform 400ms ease,
+      box-shadow 400ms ease;
+  }
+
+  .glass-card:hover {
+    background: color-mix(in srgb, #ffffff 15%, transparent);
+    transform: translateY(-3px);
+  }
+
+  .glass-card--featured {
+    background: color-mix(in srgb, #ffffff 15%, transparent);
+    transform: translateY(-12px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.22),
+      0 28px 70px rgba(0, 0, 0, 0.45);
+  }
+
+  .glass-card--featured:hover {
+    background: color-mix(in srgb, #ffffff 18%, transparent);
+    transform: translateY(-15px);
+  }
+
+  /* ==========================================================
+     首屏文案配色 —— 深林时 700ms 过渡为深蓝灰 #182C41
+     ========================================================== */
+  .hero-copy {
+    --ink-strong: #ffffff;
+    --ink-soft: rgba(255, 255, 255, 0.78);
+    --ink-faint: rgba(255, 255, 255, 0.58);
+    --ink-tab: rgba(255, 255, 255, 0.55);
+    --ink-line: rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-copy.deep {
+    --ink-strong: #182c41;
+    --ink-soft: #182c41;
+    --ink-faint: rgba(24, 44, 65, 0.55);
+    --ink-tab: rgba(24, 44, 65, 0.6);
+    --ink-line: #182c41;
+  }
+
+  .hc-badge {
+    color: var(--ink-soft);
+    transition: color 700ms ease;
+  }
+
+  .hc-title {
+    color: var(--ink-strong);
+    transition: color 700ms ease;
+  }
+
+  .hc-body {
+    color: var(--ink-soft);
+    transition: color 700ms ease;
+  }
+
+  .hc-input {
+    color: var(--ink-strong);
+    caret-color: var(--ink-strong);
+    transition: color 700ms ease;
+  }
+
+  .hc-input::placeholder {
+    color: var(--ink-faint);
+    transition: color 700ms ease;
+  }
+
+  .hc-feedback {
+    color: var(--ink-soft);
+    transition: color 700ms ease;
+  }
+
+  .hc-tab {
+    color: var(--ink-tab);
+    border-bottom-color: transparent;
+    transition:
+      opacity 300ms ease,
+      color 700ms ease,
+      border-color 700ms ease;
+  }
+
+  .hc-tab-active {
+    color: var(--ink-strong);
+    border-bottom-color: var(--ink-line);
+  }
+
+  /* ==========================================================
+     邮箱胶囊聚焦高光
+     ========================================================== */
+  .email-capsule:focus-within {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 0 0 1.5px rgba(255, 255, 255, 0.55);
+  }
+
+  .email-capsule.flash::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    pointer-events: none;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.95),
+      0 0 40px 10px rgba(255, 255, 255, 0.35);
+    animation: focus-flash 1.5s ease-out forwards;
+  }
+
+  /* ==========================================================
+     正文区
+     ========================================================== */
+  .section-label {
+    @apply text-[0.8rem] tracking-[0.38em] text-white/45;
+  }
+
+  .section-title {
+    @apply font-display text-[2.9rem] leading-[1.18] text-white;
+  }
+
+  .section-desc {
+    @apply text-lg leading-[1.9] text-white/60;
+  }
+
+  .text-bullet {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+
+  .text-bullet::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  /* 正文区安静的环境光 */
+  .ambient {
+    position: relative;
+  }
+
+  .ambient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(58rem 30rem at 12% -8%, rgba(122, 152, 192, 0.1), transparent 62%),
+      radial-gradient(48rem 26rem at 92% 108%, rgba(196, 158, 108, 0.06), transparent 62%);
+  }
+
+  .ambient-2::before {
+    background:
+      radial-gradient(52rem 28rem at 88% -6%, rgba(122, 152, 192, 0.09), transparent 62%),
+      radial-gradient(52rem 28rem at 8% 106%, rgba(140, 178, 152, 0.06), transparent 62%);
+  }
+}
+
+/* ============================================================
+   车厢前景呼吸动效 —— 3s 上浮 6px 再返回，常驻 1.03 倍不露边
+   ============================================================ */
+@keyframes carriage-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.03);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) scale(1.03);
+  }
+}
+
+.carriage {
+  transform: scale(1.03);
+  animation: carriage-breathe 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes focus-flash {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .carriage {
+    animation: none;
+  }
+}
