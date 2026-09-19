@@ -22,7 +22,7 @@ npm run dev
 npm run build
 ```
 
-构建产物输出到 `dist/`。本项目已配置 `base: '/lumora/'`，适配 GitHub Pages 子路径部署。
+构建产物输出到 `dist/`。本项目配置 `base: '/'`，适配自定义域名根路径部署；`public/CNAME` 会在构建时自动拷贝到 `dist/` 根目录。
 
 ## 素材
 
@@ -30,4 +30,4 @@ npm run build
 
 ## 部署
 
-部署到 GitHub Pages 后可通过 `https://the-ribbit.github.io/lumora/` 访问。
+GitHub Pages 从 `gh-pages` 分支根目录部署（内容为 `dist/` 构建产物），绑定自定义域名，可通过 `https://enterlumora.top/` 访问。

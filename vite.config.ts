@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // GitHub Pages 部署在 https://the-ribbit.github.io/lumora/ 子路径
-  base: '/lumora/',
+  // 自定义域名根路径部署：https://enterlumora.top/
+  // 旧地址 https://the-ribbit.github.io/lumora/ 会由 GitHub Pages 自动 301 到自定义域名
+  base: '/',
 })
